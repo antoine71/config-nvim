@@ -37,3 +37,36 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 -- vim.keymap.set("n", "<C-S-l>", "<C-w>L", { desc = "Move window to the right" })
 -- vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
 -- vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
+--
+--- [[ Basic Autocommands ]]
+--  See `:help lua-guide-autocommands`
+
+-- Highlight when yanking (copying) text
+--  Try it with `yap` in normal mode
+--  See `:help vim.hl.on_yank()`
+vim.api.nvim_create_autocmd('TextYankPost', {
+  desc = 'Highlight when yanking (copying) text',
+  group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
+  callback = function()
+    vim.hl.on_yank()
+  end,
+})
+
+-- Déplacer la ligne actuelle vers le bas
+vim.keymap.set('n', '<A-j>', ':m .+1<CR>==', { desc = 'Déplace la ligne vers le bas' })
+-- Déplacer la ligne actuelle vers le haut
+vim.keymap.set('n', '<A-k>', ':m .-2<CR>==', { desc = 'Déplace la ligne vers le haut' })
+
+-- Déplacer le bloc sélectionné en mode visuel
+vim.keymap.set('v', '<A-j>', ":m '>+1<CR>gv=gv")
+vim.keymap.set('v', '<A-k>', ":m '<-2<CR>gv=gv")
+
+-- Dupliquer la ligne actuelle vers le bas (Mode Normal)
+vim.keymap.set('n', '<A-J>', ':t.<CR>==', { desc = 'Duplique la ligne vers le bas' })
+-- Dupliquer la ligne actuelle vers le haut (Mode Normal)
+vim.keymap.set('n', '<A-K>', ':t.-1<CR>==', { desc = 'Duplique la ligne vers le haut' })
+
+-- Dupliquer le bloc sélectionné vers le bas (Mode Visuel)
+vim.keymap.set('v', '<A-J>', ":t'> <CR>gv=gv", { desc = 'Duplique le bloc vers le bas' })
+-- Dupliquer le bloc sélectionné vers le haut (Mode Visuel)
+vim.keymap.set('v', '<A-K>', ":t'<-1<CR>gv=gv", { desc = 'Duplique le bloc vers le haut' })

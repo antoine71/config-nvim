@@ -209,8 +209,17 @@ return {
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         clangd = {},
-        -- gopls = {},
-        pyright = {},
+        pyright = {
+          settings = {
+            python = {
+              analysis = {
+                -- "strict" vérifie la complétude (interdit le non-typé)
+                -- "standard" vérifie seulement la cohérence de ce qui est déjà typé
+                typeCheckingMode = 'strict',
+              },
+            },
+          },
+        }, -- gopls = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -257,7 +266,7 @@ return {
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       require('mason-lspconfig').setup {
-        ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
+        ensure_installed = { 'pyright' }, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
         automatic_installation = false,
         handlers = {
           function(server_name)

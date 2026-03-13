@@ -8,6 +8,15 @@ return {
     user = 'arebilla', -- Your user.
     mail = 'arebilla@student.42lyon.fr', -- Your mail.
     -- add other options.
+    asciiart = {
+      '        :::      ::::::::',
+      '      :+:      :+:    :+:',
+      '    +:+ +:+         +:+  ',
+      '  +#+  +:+       +#+     ',
+      '+#+#+#+#+#+   +#+        ',
+      '     #+#    #+#          ',
+      '    ###   ########lyon.fr',
+    },
   },
   config = function(_, opts)
     require('42header').setup(opts)

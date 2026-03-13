@@ -1,67 +1,36 @@
 return { -- Highlight, edit, and navigate code
   'nvim-treesitter/nvim-treesitter',
+  lazy = false,
   build = ':TSUpdate',
-  main = 'nvim-treesitter.configs', -- Sets main module to use for opts
-  -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
-  dependencies = {
-    'nvim-treesitter/nvim-treesitter-textobjects',
-  },
-  opts = {
-    ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'python' },
-    -- Autoinstall languages that are not installed
-    auto_install = true,
-    highlight = {
-      enable = true,
-      -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
-      --  If you are experiencing weird indenting issues, add the language to
-      --  the list of additional_vim_regex_highlighting and disabled languages for indent.
-      additional_vim_regex_highlighting = { 'ruby' },
-    },
-    indent = { enable = true, disable = { 'ruby' } },
-    -- incremental_selection = {
-    --   enable = true,
-    --   keymaps = {
-    --     init_selection = '<C-space>',
-    --     node_incremental = '<C-space>',
-    --     scope_incremental = '<C-s>',
-    --     node_decremental = '<BS>',
-    --   },
-    -- },
-    textobjects = {
-      select = {
-        enable = true,
+  branch = 'main',
+  -- [[ Configure Treesitter ]] See `:help nvim-treesitter-intro`
+  config = function()
+    local parsers = { 'python', 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' }
+    require('nvim-treesitter').install(parsers)
+    vim.api.nvim_create_autocmd('FileType', {
+      callback = function(args)
+        local buf, filetype = args.buf, args.match
 
-        -- Automatically jump forward to textobj, similar to targets.vim
-        lookahead = true,
+        local language = vim.treesitter.language.get_lang(filetype)
+        if not language then
+          return
+        end
 
-        keymaps = {
-          -- Fonctions
-          ['af'] = '@function.outer',
-          ['if'] = '@function.inner',
+        -- check if parser exists and load it
+        if not vim.treesitter.language.add(language) then
+          return
+        end
+        -- enables syntax highlighting and other treesitter features
+        vim.treesitter.start(buf, language)
 
-          -- Classes
-          ['ac'] = '@class.outer',
-          ['ic'] = '@class.inner',
+        -- enables treesitter based folds
+        -- for more info on folds see `:help folds`
+        -- vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+        -- vim.wo.foldmethod = 'expr'
 
-          -- Conditions
-          ['ai'] = '@conditional.outer',
-          ['ii'] = '@conditional.inner',
-
-          -- Boucles
-          ['al'] = '@loop.outer',
-          ['il'] = '@loop.inner', -- You can use the capture groups defined in textobjects.scm
-        },
-        include_surrounding_whitespace = false,
-        selection_modes = function(_)
-          return 'V' -- linewise pour TOUT
-        end,
-      },
-    },
-    -- There are additional nvim-treesitter modules that you can use to interact
-    -- with nvim-treesitter. You should go explore a few and see what interests you:
-    --
-    --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
-    --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
-    --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
-  },
+        -- enables treesitter based indentation
+        vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+      end,
+    })
+  end,
 }

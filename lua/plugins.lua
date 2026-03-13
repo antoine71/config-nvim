@@ -30,13 +30,19 @@ require('lazy').setup({
 
   require 'plugins.treesitter',
 
-  require 'plugins.hard-time',
+  --require 'plugins.hard-time',
 
   require 'plugins.flash',
 
   require 'plugins.42-header',
 
   require 'plugins.markdown-preview',
+
+  require 'plugins.nvim-autopairs',
+
+  require 'plugins.claudecode',
+
+  require 'plugins.neo-tree',
 
   -- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
   -- init.lua. If you want these files, they are in the repository, so you can just download them and

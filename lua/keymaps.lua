@@ -73,3 +73,7 @@ vim.keymap.set('n', '<A-K>', ':t.-1<CR>==', { desc = 'Duplique la ligne vers le 
 vim.keymap.set('v', '<A-J>', ":t'> <CR>gv=gv", { desc = 'Duplique le bloc vers le bas' })
 -- Dupliquer le bloc sélectionné vers le haut (Mode Visuel)
 vim.keymap.set('v', '<A-K>', ":t'<-1<CR>gv=gv", { desc = 'Duplique le bloc vers le haut' })
+
+vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float, { desc = 'Show diagnostic' })
+
+vim.keymap.set('n', '<leader>e', ':Neotree toggle<CR>', { desc = 'Toggle Neo-tree' })

@@ -14,6 +14,8 @@ return {
     { '\\', ':Neotree reveal<CR>', desc = 'NeoTree reveal', silent = true },
   },
   opts = {
+    enable_git_status = true,
+    enable_diagnostics = true,
     filesystem = {
       window = {
         mappings = {
